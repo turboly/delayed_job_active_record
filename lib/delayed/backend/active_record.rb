@@ -54,6 +54,15 @@ module Delayed
 
         before_save :set_default_run_at
 
+        def initialize(attributes = nil)
+          # remove notes attributes if column doesnt exist
+          # so we don't get ActiveModel::UnknownAttributeError (unknown attribute 'notes')
+          if !attributes.nil? && !self.respond_to?('notes')
+            attributes.delete(:notes)
+          end
+          super(attributes)
+        end
+
         def self.set_delayed_job_table_name
           delayed_job_table_name = "#{::ActiveRecord::Base.table_name_prefix}delayed_jobs"
           self.table_name = delayed_job_table_name
