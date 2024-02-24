@@ -57,9 +57,7 @@ module Delayed
         def initialize(attributes = nil)
           # remove notes attributes if column doesnt exist
           # so we don't get ActiveModel::UnknownAttributeError (unknown attribute 'notes')
-          if !attributes.nil? && !self.respond_to?('notes')
-            attributes.delete(:notes)
-          end
+          attributes.delete(:notes) if !attributes.nil? && !respond_to?(:notes)
           super(attributes)
         end
 
